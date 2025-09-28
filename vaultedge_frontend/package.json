@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "start": "npm run build && npx serve dist -s -p $PORT",
     "build": "vue-cli-service build"
   },
   "dependencies": {
@@ -22,8 +21,7 @@
     "tailwindcss": "^4.1.11",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
-    "vuex": "^4.0.0",
-    "serve": "^14.0.0"
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
