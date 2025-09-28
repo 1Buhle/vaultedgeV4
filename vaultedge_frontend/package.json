@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "start": "npm run build && npx serve dist",
+    "start": "npm run build && npx serve dist -s -l $PORT",
     "build": "vue-cli-service build"
   },
   "dependencies": {
