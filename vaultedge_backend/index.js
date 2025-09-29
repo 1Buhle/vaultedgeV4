@@ -6,7 +6,19 @@ const port = process.env.PORT || 3000; // FIXED: Use Railway's dynamic port
 const cors = require('cors');
  
 dotenv.config();
-app.use(cors());
+
+// Configure CORS to allow your frontend domain
+const corsOptions = {
+    origin: [
+        'https://beautiful-peace-production.up.railway.app',
+        'http://localhost:5173', // for local development
+        'http://localhost:3000'
+    ],
+    credentials: true,
+    optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.json());
 
