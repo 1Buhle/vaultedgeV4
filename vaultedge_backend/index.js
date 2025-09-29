@@ -2,23 +2,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const app = express();
 const bodyParser = require('body-parser');
-const port = process.env.PORT || 3000; // FIXED: Use Railway's dynamic port
+const port = 3000;
 const cors = require('cors');
  
 dotenv.config();
-
-// Configure CORS to allow your frontend domain
-const corsOptions = {
-    origin: [
-        'https://beautiful-peace-production.up.railway.app',
-        'http://localhost:5173', // for local development
-        'http://localhost:3000'
-    ],
-    credentials: true,
-    optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 
@@ -43,11 +31,6 @@ app.use('/auth', authRoutes);
 // app.use('/orders', orderRoutes);
 // app.use('/payments', paymentRoutes);
 
-// Health check endpoint
-app.get('/', (req, res) => {
-    res.json({ message: 'VaultEdge API is running' });
-});
-
 app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+    console.log(`Server running on port http://vaultedgev4-production.up.railway.app:${port}`);
 });
