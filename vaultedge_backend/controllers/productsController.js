@@ -1,3 +1,5 @@
+// productsController.js
+
 const Products = require('../models/productsModel.js');
 
 // Get all products
@@ -6,7 +8,11 @@ exports.getAllProducts = async (req, res) => {
         const products = await Products.getProducts();
         res.json(products);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // This catches the error thrown by the model and sends a 500 status
+        res.status(500).json({ 
+            message: 'Internal Server Error', 
+            details: error.message // Use error.message for more clarity
+        });
     }
 };
 
@@ -16,7 +22,7 @@ exports.getProductById = async (req, res) => {
     try {
         const { product_id } = req.params;
         const product = await Products.getProductById(product_id);
-        // console.log('Product fetched from DB:', product); //checking what is being fetched and why it is not displaying
+        // console.log('Product fetched from DB:', product);
 
 
         if (!product) {
@@ -25,7 +31,10 @@ exports.getProductById = async (req, res) => {
 
         res.json(product);
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ 
+            message: 'Internal Server Error', 
+            details: error.message
+        });
     }
 };
 
@@ -41,6 +50,9 @@ exports.getProductByBrand = async (req,res) => {
 
         res.json(product)
     } catch (error) {
-        res.status(500).json({ error: error.message});
+        res.status(500).json({ 
+            message: 'Internal Server Error', 
+            details: error.message
+        });
     }
 }
