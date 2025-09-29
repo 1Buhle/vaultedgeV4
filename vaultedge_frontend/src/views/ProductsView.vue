@@ -90,13 +90,6 @@ onMounted(async () => {
         products.value = response.data;
     } catch (error) {
         console.error('Failed to fetch products:', error);
-        console.error('Error details:', {
-            message: error.message,
-            response: error.response?.data,
-            status: error.response?.status
-        });
-        // Optionally show a user-friendly error message
-        alert('Unable to load products. Please try again later.');
     }
 })
 import { useCart } from '@/composables/useCart'; // Import useCart composable
