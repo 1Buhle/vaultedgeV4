@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const app = express();
 const bodyParser = require('body-parser');
-const port = 3000;
+const port = process.env.PORT || 3000; // FIXED: Use Railway's dynamic port
 const cors = require('cors');
  
 dotenv.config();
@@ -31,6 +31,11 @@ app.use('/auth', authRoutes);
 // app.use('/orders', orderRoutes);
 // app.use('/payments', paymentRoutes);
 
+// Health check endpoint
+app.get('/', (req, res) => {
+    res.json({ message: 'VaultEdge API is running' });
+});
+
 app.listen(port, () => {
-    console.log(`Server running on port http://localhost:${port}`);
+    console.log(`Server running on port ${port}`);
 });
