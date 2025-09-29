@@ -82,19 +82,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-//dynamic products list from database
-const products = ref([]);
-onMounted(async () => {
-    try {
-        const response = await axios.get('https://vaultedgev4-production.up.railway.app/products');
-        products.value = response.data;
-    } catch (error) {
-        console.error('Failed to fetch products:', error);
-    }
-})
-import { useCart } from '@/composables/useCart'; // Import useCart composable
-// // Destructure addItemToCart from the composable
-const { addItemToCart } = useCart();
+
 // Import all images at the top
 import xiaomiC200 from '@/assets/Xiaomi White C200 Smart Camera.jpg'
 import xiaomiCW300 from '@/assets/Xiaomi White CW300 Outdoor Camera.jpg'
@@ -103,84 +91,79 @@ import googleNestWired from '@/assets/Google Nest Cam (wired).jpg'
 import xiaomiC300Dual from '@/assets/Xiaomi Smart Camera C300 Dual.png'
 import googleDoorbellBattery from '@/assets/Google Nest Doorbell (battery).jpg'
 import googleDoorbellWired from '@/assets/Google Nest Doorbell (wired).jpg'
-// Note: You'll need to add these image files to your assets folder
 import ebsf850Terminal from '@/assets/EBSF850 FACIAL TERMINAL.jpg'
 import ebZ101Terminal from '@/assets/EBZ101 FINGERPRINT TERMINAL.jpg'
-// const products = [
-//     {
-//         id: 1,
-//         name: 'Xiaomi Smart Camera C200',
-//         slug: 'xiaomi-smart-camera-c200',
-//         price: 'R900',
-//         imageSrc: xiaomiC200,
-//         imageAlt: 'Xiaomi Smart Camera C200 with 1080p HD resolution and night vision.',
-//         URL: '/product/1/xiaomi-smart-camera-c200'
-//     },
-//     {
-//         id: 2,
-//         name: 'Xiaomi Outdoor Camera CW300',
-//         slug: 'xiaomi-outdoor-camera-cw300',
-//         price: 'R1,100',
-//         imageSrc: xiaomiCW300,
-//         imageAlt: 'Xiaomi CW300 Outdoor Camera with weather resistance.',
-//     },
-//     {
-//         id: 3,
-//         name: 'Google Nest Cam (Battery)',
-//         slug: 'google-nest-cam-battery',
-//         price: 'R855',
-//         imageSrc: googleNestBattery,
-//         imageAlt: 'Google Nest Cam with battery power and wireless connectivity.',
-//     },
-//     {
-//         id: 4,
-//         name: 'Google Nest Cam (Wired)',
-//         slug: 'google-nest-cam-wired',
-//         price: 'R690',
-//         imageSrc: googleNestWired,
-//         imageAlt: 'Google Nest Cam with wired power connection.',
-//     },
-//     {
-//         id: 5,
-//         name: 'Xiaomi Smart Camera C300 Dual',
-//         slug: 'xiaomi-smart-camera-c300-dual',
-//         price: 'R1,200',
-//         imageSrc: xiaomiC300Dual,
-//         imageAlt: 'Xiaomi Smart Camera C300 with dual lens system.',
-//     },
-//     {
-//         id: 6,
-//         name: 'Google Nest Doorbell (Battery)',
-//         slug: 'google-nest-doorbell-battery',
-//         price: 'R1,500',
-//         imageSrc: googleDoorbellBattery,
-//         imageAlt: 'Google Nest Doorbell with battery power and smart alerts.',
-//     },
-//     {
-//         id: 7,
-//         name: 'Google Nest Doorbell (Wired)',
-//         slug: 'google-nest-doorbell-wired',
-//         price: 'R2,500',
-//         imageSrc: googleDoorbellWired,
-//         imageAlt: 'Google Nest Doorbell with wired power connection.',
-//     },
-//     {
-//         id: 8,
-//         name: 'EBZ101 Fingerprint Terminal',
-//         slug: 'ebz101-fingerprint-terminal',
-//         price: 'R6,000',
-//         imageSrc: ebZ101Terminal,
-//         imageAlt: 'EBZ101 Fingerprint Terminal for secure access control.',
-//     },
-//     {
-//         id: 9,
-//         name: 'EBSF850 Facial Terminal',
-//         slug: 'ebsf850-facial-terminal',
-//         price: 'R4,500',
-//         imageSrc: ebsf850Terminal,
-//         imageAlt: 'EBSF850 Facial Recognition Terminal for advanced security.',
-//     },
-// ]
+
+import { useCart } from '@/composables/useCart';
+const { addItemToCart } = useCart();
+
+// Use hardcoded products temporarily
+const products = ref([
+    {
+        product_id: 1,
+        product_name: 'Xiaomi Smart Camera C200',
+        product_price: 'R900',
+        product_url: xiaomiC200,
+    },
+    {
+        product_id: 2,
+        product_name: 'Xiaomi Outdoor Camera CW300',
+        product_price: 'R1,100',
+        product_url: xiaomiCW300,
+    },
+    {
+        product_id: 3,
+        product_name: 'Google Nest Cam (Battery)',
+        product_price: 'R855',
+        product_url: googleNestBattery,
+    },
+    {
+        product_id: 4,
+        product_name: 'Google Nest Cam (Wired)',
+        product_price: 'R690',
+        product_url: googleNestWired,
+    },
+    {
+        product_id: 5,
+        product_name: 'Xiaomi Smart Camera C300 Dual',
+        product_price: 'R1,200',
+        product_url: xiaomiC300Dual,
+    },
+    {
+        product_id: 6,
+        product_name: 'Google Nest Doorbell (Battery)',
+        product_price: 'R1,500',
+        product_url: googleDoorbellBattery,
+    },
+    {
+        product_id: 7,
+        product_name: 'Google Nest Doorbell (Wired)',
+        product_price: 'R2,500',
+        product_url: googleDoorbellWired,
+    },
+    {
+        product_id: 8,
+        product_name: 'EBZ101 Fingerprint Terminal',
+        product_price: 'R6,000',
+        product_url: ebZ101Terminal,
+    },
+    {
+        product_id: 9,
+        product_name: 'EBSF850 Facial Terminal',
+        product_price: 'R4,500',
+        product_url: ebsf850Terminal,
+    },
+]);
+
+// Comment out API call temporarily
+// onMounted(async () => {
+//     try {
+//         const response = await axios.get('https://vaultedgev4-production.up.railway.app/products');
+//         products.value = response.data;
+//     } catch (error) {
+//         console.error('Failed to fetch products:', error);
+//     }
+// })
 </script>
 <style scoped>
 .product-card {
