@@ -1,5 +1,5 @@
 //Here i am declaring all my functions which will interact with the database
-const db = require('../config/db');
+const db = require('../db');
 
 exports.getProducts = async () => {
     const [rows] = await db.query('SELECT * FROM products');
