@@ -1,4 +1,3 @@
-// index.js
 const express = require('express');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
@@ -44,7 +43,7 @@ const dealsRoutes = require('./routes/deals');
 const contactRoutes = require('./routes/contact');
 const authRoutes = require('./routes/auth');
 
-// Mount routes using **relative paths**
+// Mount routes using relative paths
 app.use('/cart', cartRoutes);
 app.use('/products', productRoutes);
 app.use('/contact', contactRoutes);
