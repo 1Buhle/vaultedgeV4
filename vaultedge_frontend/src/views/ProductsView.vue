@@ -1,36 +1,45 @@
 <template>
-  <div>
+  <div class="relative overflow-hidden bg-white">
     <!-- Hero Section -->
-    <div class="relative overflow-hidden bg-white">
-      <div class="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
-        <div class="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
-          <div class="sm:max-w-lg">
-            <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-              Smart Security & Access Control
-            </h1>
-            <p class="mt-4 text-xl text-gray-500">
-              Smart cameras, doorbells, and access control systems with 4K clarity, intelligent motion alerts, voice control, fingerprint recognition, and secure cloud storage all in a sleek, modern design.
-            </p>
-          </div>
-          <div class="mt-10">
-            <RouterLink
-              to="/catagories"
-              class="inline-block rounded-md border border-transparent bg-black px-8 py-3 text-center font-medium text-white hover:bg-gray-900"
-            >
-              Shop by brand
-            </RouterLink>
-          </div>
+    <div class="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
+      <div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="sm:max-w-lg">
+          <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
+            Smart Security & Access Control
+          </h1>
+          <p class="mt-4 text-xl text-gray-500">
+            Smart cameras, doorbells, and access control systems with 4K clarity, intelligent motion alerts, 
+            voice control, fingerprint recognition, and secure cloud storage.
+          </p>
+        </div>
+        <div class="mt-10">
+          <RouterLink
+            to="/catagories"
+            class="inline-block rounded-md border border-transparent bg-black px-8 py-3 text-center font-medium text-white hover:bg-gray-900"
+          >
+            Shop by brand
+          </RouterLink>
         </div>
       </div>
     </div>
 
-    <!-- Products Grid -->
+    <!-- Products Section -->
     <div class="bg-white">
       <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-8 text-center">
-          Our Products
-        </h2>
-        <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+        <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-8 text-center">Our Products</h2>
+
+        <!-- Loading State -->
+        <div v-if="loading" class="text-center py-20 text-gray-500">
+          Loading products...
+        </div>
+
+        <!-- Error State -->
+        <div v-if="error" class="text-center py-20 text-red-500">
+          Failed to load products. Please try again later.
+        </div>
+
+        <!-- Products Grid -->
+        <div v-if="!loading && !error" class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
           <div v-for="product in products" :key="product.product_id" class="group product-card relative">
             <RouterLink :to="`/product/${product.product_id}`" class="block group-hover:no-underline">
               <div class="overflow-hidden rounded-lg bg-gray-200 aspect-square">
@@ -61,32 +70,25 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useCart } from '@/composables/useCart';
 
-// Destructure addItemToCart from the composable
+const products = ref([]);
+const loading = ref(true);
+const error = ref(false);
+
 const { addItemToCart } = useCart();
 
-// Products array
-const products = ref([]);
-
-// Fetch products from Railway backend
 onMounted(async () => {
   try {
     const response = await axios.get('https://vaultedgev4-production.up.railway.app/products', {
-      withCredentials: true, // in case you use cookies/auth later
+      withCredentials: true // required if backend sends cookies/JWT
     });
     products.value = response.data;
-  } catch (error) {
-    console.error('Failed to fetch products:', error);
+  } catch (err) {
+    console.error('Failed to fetch products:', err);
+    error.value = true;
+  } finally {
+    loading.value = false;
   }
 });
-
-// Import static images if needed for hero section
-import xiaomiC200 from '@/assets/Xiaomi White C200 Smart Camera.jpg';
-import xiaomiCW300 from '@/assets/Xiaomi White CW300 Outdoor Camera.jpg';
-import googleNestBattery from '@/assets/Google Nest Cam (battery).jpg';
-import googleNestWired from '@/assets/Google Nest Cam (wired).jpg';
-import xiaomiC300Dual from '@/assets/Xiaomi Smart Camera C300 Dual.png';
-import googleDoorbellBattery from '@/assets/Google Nest Doorbell (battery).jpg';
-import googleDoorbellWired from '@/assets/Google Nest Doorbell (wired).jpg';
 </script>
 
 <style scoped>
@@ -98,11 +100,12 @@ import googleDoorbellWired from '@/assets/Google Nest Doorbell (wired).jpg';
 }
 .product-card:hover {
   transform: scale(1.05);
+  text-decoration: none;
 }
-.product-card img {
+.product-image {
   transition: transform 0.3s ease-in-out;
 }
-.product-card:hover img {
+.product-card:hover .product-image {
   transform: scale(1.1);
 }
 </style>
