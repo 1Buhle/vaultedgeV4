@@ -1,15 +1,19 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
 dotenv.config();
 
-// Use the port Railway provides, or fallback to 3000 for local testing
+const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+// Enable CORS for your frontend domain
+app.use(cors({
+    origin: 'https://beautiful-peace-production.up.railway.app',
+    credentials: true // only if you send cookies or auth headers
+}));
+
 app.use(bodyParser.json());
 app.use(express.json());
 
@@ -30,6 +34,7 @@ app.use('/packages', packagesRoutes);
 app.use('/deals', dealsRoutes);
 app.use('/auth', authRoutes);
 
+// Start server
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
