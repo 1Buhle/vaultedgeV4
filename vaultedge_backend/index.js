@@ -1,8 +1,9 @@
+// index.js
 const express = require('express');
 const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const mysql = require('mysql2/promise'); // if you’re using MySQL
+const bodyParser = require('body-parser');
+const Products = require('./models/productsModel'); // your model
 
 dotenv.config();
 
@@ -18,38 +19,16 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(express.json());
 
-// Database connection (adjust with Railway credentials)
-const dbConfig = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    port: process.env.DB_PORT,
-};
-let connection;
-
-async function connectDB() {
-    try {
-        connection = await mysql.createPool(dbConfig);
-        console.log('Connected to MySQL database');
-    } catch (error) {
-        console.error('Database connection failed:', error);
-    }
-}
-connectDB();
-
-// Pass DB connection to routes via app.locals
-app.locals.db = connection;
-
 // Routes
 const cartRoutes = require('./routes/cart');
-const productRoutes = require('./routes/products'); 
+const productRoutes = require('./routes/products');
 const userRoutes = require('./routes/user');
 const packagesRoutes = require('./routes/packages');
 const dealsRoutes = require('./routes/deals');
 const contactRoutes = require('./routes/contact');
 const authRoutes = require('./routes/auth');
 
+// Attach routes
 app.use('/cart', cartRoutes);
 app.use('/products', productRoutes);
 app.use('/contact', contactRoutes);
@@ -58,8 +37,10 @@ app.use('/packages', packagesRoutes);
 app.use('/deals', dealsRoutes);
 app.use('/auth', authRoutes);
 
-// Root health check
-app.get('/', (req, res) => res.send('Backend is running on Railway!'));
+// Default route to check server is live
+app.get('/', (req, res) => {
+    res.send('Backend is running!');
+});
 
 // Start server
 app.listen(port, () => {
