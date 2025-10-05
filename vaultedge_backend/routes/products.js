@@ -1,9 +1,17 @@
+// routes/products.js
 const express = require('express');
 const router = express.Router();
-const productsController = require('../controllers/productsController.js');
+const db = require('../db');
 
-router.get('/brand/:product_brand',productsController.getProductByBrand);
-router.get('/id/:product_id', productsController.getProductById);
-router.get('/', productsController.getAllProducts);
+// Get all products
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM products');
+    res.json(rows);
+  } catch (error) {
+    console.error('❌ Error fetching products:', error);
+    res.status(500).json({ message: 'Failed to fetch products', error: error.message });
+  }
+});
 
 module.exports = router;
