@@ -86,7 +86,7 @@ import axios from 'axios';
 const products = ref([]);
 onMounted(async () => {
     try {
-        const response = await axios.get('https://localhost:3000/products');
+        const response = await axios.get('https://vaultedgev4-production.up.railway.app/products');
         products.value = response.data;
     } catch (error) {
         console.error('Failed to fetch products:', error);
