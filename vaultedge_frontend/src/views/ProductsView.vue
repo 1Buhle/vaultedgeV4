@@ -86,7 +86,7 @@ import axios from 'axios';
 const products = ref([]);
 onMounted(async () => {
     try {
-        const response = await axios.get('https://yamanote.proxy.rlwy.net:27729/products');
+        const response = await axios.get('https://localhost:30009/products');
         products.value = response.data;
     } catch (error) {
         console.error('Failed to fetch products:', error);
